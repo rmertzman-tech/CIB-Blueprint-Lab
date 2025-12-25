@@ -1,1 +1,345 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="shortcut icon" href="./favicon.ico"/><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/><meta http-equiv="Pragma" content="no-cache"/><meta http-equiv="Expires" content="0"/><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"/><meta name="theme-color" content="#000000"/><title>Office Scripts</title><script>var url=window.location.href,isLocal=0===url.indexOf("https://localhost:3003/");window.OsfOptOut=isLocal,window.useAssociatedActionsOnly=!0</script><style>*,::after,::before{padding:0;margin:0;-webkit-box-sizing:inherit;box-sizing:inherit}html{font-size:62.5%}body{font-family:"Segoe UI Web (Arabic)","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif!important;color:#323b3a;font-size:14px;-webkit-box-sizing:border-box;box-sizing:border-box;overscroll-behavior-y:none;background-color:#fff;overflow:hidden}#loadingWrapper{background:#f5f5f5;width:100%;height:100%;position:absolute}#loading{position:absolute;z-index:2000000;color:#212121;background:#f5f5f5;height:100%;width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}#loading>img{height:120px;margin-bottom:15px}#loading>h1{color:#666;margin-top:10px;margin-bottom:10px;margin-left:8px}#loading>h2{color:#999;max-width:250px;text-align:center}#loading>a{color:#999!important;margin-top:10px}@media only screen and (max-width:500px){#loading>pre{padding:0 30px}}#loading>.loading-indicator{-webkit-box-sizing:border-box;box-sizing:border-box;text-align:center;border:2px solid #9fcdb3;border-top:2px solid #217346;border-radius:50%;width:30px;height:30px;animation:loading-animation 1s linear infinite}@-webkit-keyframes loading-animation{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes loading-animation{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}#errorRoot{height:100%;width:100%;display:block;padding:0 1.6rem 1.6rem;background:#f5f5f5;height:100vh;min-height:100vh;width:100%;display:flex;flex-direction:column}#errorRoot label{display:block;padding-top:5px;padding-bottom:5px}#errorRoot #errorHeader{font-size:15px;font-weight:600}#errorRoot #errorDescription{font-size:12px}#errorRoot #errorFooter{font-size:12px}#errorRoot .endJustifiedFlexWrapper{width:100%;display:flex;justify-content:flex-end}#errorRoot button{background-color:#217346;color:#fff;font-size:12px;font-weight:600;min-width:80px;height:2.6rem;border-color:transparent;outline:transparent;border-width:1px;border-radius:2px;margin-top:2.4rem}#errorRoot button:hover{background-color:#0f522d}#errorRoot button:active{background-color:#084121}#errorRoot pre{font-size:100%;color:#999;margin-top:10px;max-height:50%;max-width:100%;padding:0 80px;word-break:break-all;white-space:pre-wrap;overflow-y:auto}</style><meta name="Content-Security-Policy" content="default-src 'none' ; script-src 'self' 'unsafe-inline' https://alcdn.msauth.net https://appsforoffice.microsoft.com ; img-src 'self' data: ; style-src 'unsafe-inline' ; font-src 'self' data: https://res-1.cdn.office.net https://spoprod-a.akamaihd.net ; frame-src 'self' *.test.arbitraryrunner.com *.runtime.arbitraryrunner.com *.officescripts.microsoftusercontent.com *.gcc.officescripts.microsoftusercontent.com https://telemetryservice.firstpartyapps.oaspapps.com https://login.microsoftonline.com https://microsoft-onmicrosoft-com.access.mcas.ms ; connect-src 'self' https://api.test.arbitraryrunner.com https://api.runtime.arbitraryrunner.com https://api.officescripts.microsoftusercontent.com https://api.gcc.officescripts.microsoftusercontent.com https://login.microsoftonline.com https://browser.events.data.microsoft.com https://graph.microsoft.com https://*.powerautomate.com https://*.events.data.microsoft.com https://*.api.flow.microsoft.com https://res.cdn.office.net https://login.live.com https://*.access.mcas.ms https://*.access.mcas-gov.ms https://eu-mobile.events.data.microsoft.com https://microsoft-my.sharepoint-df.com ; require-trusted-types-for 'script' ; trusted-types script-url#webpack officejs officejs-domparser officejs-url ;"><script>(()=>{"use strict";var e={},a={};function t(r){var c=a[r];if(void 0!==c)return c.exports;var f=a[r]={id:r,loaded:!1,exports:{}};return e[r].call(f.exports,f,f.exports,t),f.loaded=!0,f.exports}t.m=e,t.amdO={},(()=>{var e=[];t.O=(a,r,c,f)=>{if(!r){var o=1/0;for(i=0;i<e.length;i++){r=e[i][0],c=e[i][1],f=e[i][2];for(var d=!0,n=0;n<r.length;n++)(!1&f||o>=f)&&Object.keys(t.O).every((e=>t.O[e](r[n])))?r.splice(n--,1):(d=!1,f<o&&(o=f));if(d){e.splice(i--,1);var b=c();void 0!==b&&(a=b)}}return a}f=f||0;for(var i=e.length;i>0&&e[i-1][2]>f;i--)e[i]=e[i-1];e[i]=[r,c,f]}})(),t.n=e=>{var a=e&&e.__esModule?()=>e.default:()=>e;return t.d(a,{a:a}),a},(()=>{var e,a=Object.getPrototypeOf?e=>Object.getPrototypeOf(e):e=>e.__proto__;t.t=function(r,c){if(1&c&&(r=this(r)),8&c)return r;if("object"==typeof r&&r){if(4&c&&r.__esModule)return r;if(16&c&&"function"==typeof r.then)return r}var f=Object.create(null);t.r(f);var o={};e=e||[null,a({}),a([]),a(a)];for(var d=2&c&&r;"object"==typeof d&&!~e.indexOf(d);d=a(d))Object.getOwnPropertyNames(d).forEach((e=>o[e]=()=>r[e]));return o.default=()=>r,t.d(f,o),f}})(),t.d=(e,a)=>{for(var r in a)t.o(a,r)&&!t.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:a[r]})},t.f={},t.e=e=>Promise.all(Object.keys(t.f).reduce(((a,r)=>(t.f[r](e,a),a)),[])),t.u=e=>8227===e?"8227.2685c23d.js":9342===e?"9342.96f561fc.js":1773===e?"1773.b3f83937.js":3677===e?"3677.773da6b5.js":5183===e?"5183.286cdd2d.js":({932:"run-from-button",1715:"LocalStorageConsent",2178:"notfound",3275:"LocalStorageWorkbook",3293:"LocalStorageUsers",4261:"office.script.sync",4835:"office.script.synchronous.intellisense.types",5225:"LocalStorageVersion",5560:"LocalStorageAdmin",6008:"editor",7504:"office.script.synchronous.library",7537:"office.script.synchronous.intellisense.synchronous.preview",7594:"about",8456:"office.script.synchronous.intellisense.batch",8773:"power-automate",8943:"office.script.synchronous.intellisense.synchronous",9777:"recorder"}[e]||e)+"."+{50:"81bcfa68",54:"521f77d4",362:"911f4102",402:"b5aa3350",559:"ed33d5cb",564:"82b4bc74",572:"81b12834",632:"23fb020f",658:"7c9b90a8",672:"1f01c427",738:"e1d1b77b",787:"4d656b86",865:"7f015726",932:"11bb811f",962:"519af2f7",968:"72801b8d",974:"380e6dfc",976:"7afb2f9d",1042:"1eaf8078",1072:"e11df580",1106:"1cb898df",1128:"68d940ac",1244:"78d6f28d",1250:"78124570",1299:"7643e421",1354:"817abaa1",1374:"4b32fb42",1444:"d2df1f22",1468:"a0e19e50",1514:"03d179ad",1551:"304309d5",1634:"49d1a06f",1674:"d0808f02",1715:"a5540e66",1717:"dcfa50f7",1770:"98549e90",1790:"29f1e6ac",1859:"ec0ad7a1",1994:"fba1019d",2156:"ad9a65d1",2178:"aaad3989",2200:"c2c829be",2210:"6d74fbd2",2326:"9cc3b739",2338:"b0be70f1",2362:"dcd3bcf0",2442:"cdd85337",2481:"9e2fdb58",2573:"f914161e",2653:"feaeff71",2674:"81ec70db",2870:"d2be7913",3039:"e106e3b8",3040:"b5aa3efd",3126:"8edae53d",3164:"69d671e1",3201:"3dc1325e",3205:"6635bcc4",3275:"a6e7bf8f",3282:"177de2a6",3293:"ac939ba3",3329:"cca779ce",3420:"2dd4a226",3430:"c8382908",3763:"a73d61e5",3892:"89021d6d",4058:"c450e201",4063:"324934b7",4094:"776a3f68",4128:"4b681774",4170:"b44717c5",4183:"277cb7e6",4210:"41f27a4a",4240:"2c8417de",4261:"b8dd2068",4346:"6ab37e06",4358:"c8125f73",4470:"09ba3d57",4474:"8bbd1ae0",4517:"1cd1e537",4642:"aa4d3d64",4733:"4adea50e",4751:"2708452e",4754:"905d2606",4770:"a10e8b96",4782:"02123cad",4822:"757f6675",4835:"fed22594",4930:"87f6cbb8",5031:"694702b5",5058:"8e83f4c3",5092:"31dfd669",5142:"ebb12d06",5156:"4f1b061b",5164:"a9a9cdd7",5225:"f60306da",5318:"9ef07e23",5346:"6e28784c",5352:"d8ef9633",5354:"eb732b35",5420:"af4e5929",5473:"bf03dfb4",5520:"a4e12754",5560:"1fef5e92",5621:"705da866",5662:"b745c97f",5758:"eec2b250",5874:"ab9c76da",5891:"268b9162",5902:"93a94cd3",5916:"f07765d1",5953:"e2f09aed",5993:"8d9896be",6008:"9f7f72b7",6026:"d1eb290b",6034:"387cf54a",6077:"54e11233",6082:"6eaf6a22",6128:"a69e2e62",6130:"6f6abd14",6188:"de3de6b8",6223:"1150de1d",6295:"6ab4d76c",6444:"f3cbdf5a",6471:"e9110fc3",6499:"dea73694",6510:"73064308",6561:"2ae993c1",6592:"a43f01f0",6608:"06a0276c",6676:"cf6e3587",6738:"a00cf008",6748:"be2efb93",6786:"9f25b074",6898:"54fde2c4",6900:"3f4c619c",6981:"00de31d9",7244:"2f87824e",7254:"a369c600",7374:"2742a26b",7397:"ae50f701",7421:"b1e4dfaa",7432:"6fb543f0",7498:"e65ec1a2",7504:"29fa7b01",7537:"5b881c8e",7594:"407991b6",7694:"86d438db",7771:"695d51f1",7801:"c11fdfb0",7868:"ce781019",7873:"f4bf310c",7886:"83ce6ecc",7911:"6f5f6387",7923:"eb02ee5c",7925:"9c6eec39",7940:"40cb16c9",7952:"37b6a30e",8006:"059d55f2",8172:"5587b14c",8196:"818d0cb3",8206:"7cc9a0ed",8226:"118367fb",8314:"48c2670f",8328:"0a9aeab9",8330:"ee47ae48",8346:"f0f504b7",8411:"0666b8a7",8428:"8d0eb7d9",8456:"e5dc90cd",8566:"10a31ca7",8595:"f76c6c55",8688:"f33028fd",8752:"29b52b4d",8773:"a8c42a9d",8811:"677a8a15",8834:"575a2f56",8888:"37c5fc8d",8943:"82ffd9b9",8962:"32d79b90",8974:"a2034698",9108:"b6a2cf00",9110:"ac3633d5",9118:"e061e68a",9185:"229f2b29",9246:"49585332",9306:"2e157809",9327:"789d9b87",9347:"8a1e50c2",9441:"7247451c",9442:"4bcb482a",9450:"bd980b17",9520:"fffff7e9",9559:"00a2e62c",9618:"b98ea1d7",9682:"86f43b61",9698:"6c5902a2",9730:"921100d5",9777:"226e07d1",9858:"209d19bd",9958:"f23c0617"}[e]+".chunk.js",t.miniCssF=e=>"static/css/"+e+".9095b267.chunk.css",t.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),t.hmd=e=>((e=Object.create(e)).children||(e.children=[]),Object.defineProperty(e,"exports",{enumerable:!0,set:()=>{throw new Error("ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: "+e.id)}}),e),t.o=(e,a)=>Object.prototype.hasOwnProperty.call(e,a),(()=>{var e={},a="maker-code-editor:";t.l=(r,c,f,o)=>{if(e[r])e[r].push(c);else{var d,n;if(void 0!==f)for(var b=document.getElementsByTagName("script"),i=0;i<b.length;i++){var s=b[i];if(s.getAttribute("src")==r||s.getAttribute("data-webpack")==a+f){d=s;break}}d||(n=!0,(d=document.createElement("script")).charset="utf-8",d.timeout=120,t.nc&&d.setAttribute("nonce",t.nc),d.setAttribute("data-webpack",a+f),d.src=t.tu(r)),e[r]=[c];var l=(a,t)=>{d.onerror=d.onload=null,clearTimeout(u);var c=e[r];if(delete e[r],d.parentNode&&d.parentNode.removeChild(d),c&&c.forEach((e=>e(t))),a)return a(t)},u=setTimeout(l.bind(null,void 0,{type:"timeout",target:d}),12e4);d.onerror=l.bind(null,d.onerror),d.onload=l.bind(null,d.onload),n&&document.head.appendChild(d)}}})(),t.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},(()=>{var e;t.tt=()=>{if(void 0===e&&(e={createScriptURL:e=>e},"undefined"!=typeof trustedTypes&&trustedTypes.createPolicy))try{e=trustedTypes.createPolicy("script-url#webpack",e)}catch(e){console.warn('Could not create trusted-types policy "script-url#webpack"')}return e}})(),t.tu=e=>t.tt().createScriptURL(e),t.p="./",(()=>{var e=e=>new Promise(((a,r)=>{var c=t.miniCssF(e),f=t.p+c;if(((e,a)=>{for(var t=document.getElementsByTagName("link"),r=0;r<t.length;r++){var c=(o=t[r]).getAttribute("data-href")||o.getAttribute("href");if("stylesheet"===o.rel&&(c===e||c===a))return o}var f=document.getElementsByTagName("style");for(r=0;r<f.length;r++){var o;if((c=(o=f[r]).getAttribute("data-href"))===e||c===a)return o}})(c,f))return a();((e,a,t,r)=>{var c=document.createElement("link");c.rel="stylesheet",c.type="text/css",c.onerror=c.onload=f=>{if(c.onerror=c.onload=null,"load"===f.type)t();else{var o=f&&("load"===f.type?"missing":f.type),d=f&&f.target&&f.target.href||a,n=new Error("Loading CSS chunk "+e+" failed.\n("+d+")");n.code="CSS_CHUNK_LOAD_FAILED",n.type=o,n.request=d,c.parentNode.removeChild(c),r(n)}},c.href=a,document.head.appendChild(c)})(e,f,a,r)})),a={4577:0};t.f.miniCss=(t,r)=>{a[t]?r.push(a[t]):0!==a[t]&&{8330:1}[t]&&r.push(a[t]=e(t).then((()=>{a[t]=0}),(e=>{throw delete a[t],e})))}})(),(()=>{t.b=document.baseURI||self.location.href;var e={4577:0};t.f.j=(a,r)=>{var c=t.o(e,a)?e[a]:void 0;if(0!==c)if(c)r.push(c[2]);else if(4577!=a){var f=new Promise(((t,r)=>c=e[a]=[t,r]));r.push(c[2]=f);var o=t.p+t.u(a),d=new Error;t.l(o,(r=>{if(t.o(e,a)&&(0!==(c=e[a])&&(e[a]=void 0),c)){var f=r&&("load"===r.type?"missing":r.type),o=r&&r.target&&r.target.src;d.message="Loading chunk "+a+" failed.\n("+f+": "+o+")",d.name="ChunkLoadError",d.type=f,d.request=o,c[1](d)}}),"chunk-"+a,a)}else e[a]=0},t.O.j=a=>0===e[a];var a=(a,r)=>{var c,f,o=r[0],d=r[1],n=r[2],b=0;if(o.some((a=>0!==e[a]))){for(c in d)t.o(d,c)&&(t.m[c]=d[c]);if(n)var i=n(t)}for(a&&a(r);b<o.length;b++)f=o[b],t.o(e,f)&&e[f]&&e[f][0](),e[f]=0;return t.O(i)},r=self.webpackChunkmaker_code_editor=self.webpackChunkmaker_code_editor||[];r.forEach(a.bind(null,0)),r.push=a.bind(null,r.push.bind(r))})(),t.nc=void 0})()</script><script defer="defer" src="./7781.310041a4.js"></script><script defer="defer" src="./7448.76dca5dc.js"></script><script defer="defer" src="./3689.4ed7266c.js"></script><script defer="defer" src="./3735.2d6a02bc.js"></script><script defer="defer" src="./main.a69748e5.js"></script><link href="./static/css/main.cc196895.css" rel="stylesheet"></head><body class="ms-Fabric"><noscript>You need to enable JavaScript to enable this functionality.</noscript><div id="errorRoot" style="display:none"><label id="errorHeader" class="ms-label">Error</label> <label id="errorDescription" class="ms-label">An unexpected error occurred.</label> <button id="feedbackButton" style="display:none" class="ms-button" onclick='OfficeFirstParty.UserFeedback.CollectUserFeedback(3,1,"Extensibility\\Office Scripts",{})'><label id="feedBackText"></label></button> <label id="errorFooter" class="ms-label"></label><div class="endJustifiedFlexWrapper"><button id="refreshButton" class="ms-button" onclick="location.reload(!0)">Refresh</button></div></div><div id="loadingWrapper"><div id="loading" style="visibility:hidden"><div class="loading-indicator"></div><h2 class="ms-font-m"></h2></div></div><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The CIB Blueprint Laboratory</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #111827; color: #f3f4f6; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        // Safely access Recharts only after component mount or check for window.Recharts
+        const Recharts = window.Recharts || {};
+        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+
+        // --- PHYSICS CONSTANTS (UCP v2.0) ---
+        const PARAMS = {
+            LANDAUER_COST: 0.8,      // Energy cost per bit of depth
+            THETA_CRIT: 75,          // Sapolsky Limit (Stress Threshold)
+            REWRITE_COST: 40,        // Entropy spike during transformation
+            METABOLIC_RECOVERY: 5,   // Energy gain per tick
+            MAX_ENERGY: 100,
+            PRIME_BASE: 3,           // Branching factor for visual tree
+        };
+
+        // --- COMPONENT: THE P-ADIC TREE VISUALIZER ---
+        const PAdicTree = ({ depth, truncatedDepth, isRewriting, entropy }) => {
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+
+                ctx.clearRect(0, 0, width, height);
+
+                // Dynamic color based on state
+                let strokeColor = '#4ade80'; // Green (Healthy)
+                if (isRewriting) strokeColor = '#facc15'; // Yellow (Flux/Cryptic)
+                if (truncatedDepth < depth) strokeColor = '#ef4444'; // Red (Truncated/Stress)
+
+                const drawBranch = (x, y, len, angle, branchDepth) => {
+                    ctx.beginPath();
+                    ctx.save();
+                    ctx.strokeStyle = strokeColor;
+                    ctx.fillStyle = strokeColor;
+                    ctx.lineWidth = Math.max(1, 4 - branchDepth * 0.5);
+                    ctx.translate(x, y);
+                    ctx.rotate(angle * Math.PI / 180);
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(0, -len);
+                    ctx.stroke();
+
+                    if (branchDepth < depth) {
+                        // If we are deeper than truncation, draw as "Ghost" (Grey)
+                        if (branchDepth >= truncatedDepth) {
+                            ctx.strokeStyle = '#374151'; // Grey
+                            ctx.setLineDash([5, 5]); // Dashed line for potential but inaccessible depth
+                        } else {
+                            ctx.setLineDash([]);
+                        }
+                        
+                        // Recursive branching
+                        const newLen = len * 0.75;
+                        // Jitter based on entropy (Visualizing "Noise")
+                        const jitter = (Math.random() - 0.5) * entropy * 0.5; 
+                        
+                        drawBranch(0, -len, newLen, -25 + jitter, branchDepth + 1);
+                        drawBranch(0, -len, newLen, 25 + jitter, branchDepth + 1);
+                    }
+                    ctx.restore();
+                };
+
+                // Draw Trunk (Root)
+                drawBranch(width / 2, height - 20, 60, 0, 0);
+
+            }, [depth, truncatedDepth, isRewriting, entropy]);
+
+            return <canvas ref={canvasRef} width={300} height={300} className="mx-auto" />;
+        };
+
+        // --- MAIN APP COMPONENT ---
+        const App = () => {
+            // --- STATE ---
+            const [depth, setDepth] = useState(2); // Current Logical Depth
+            const [energy, setEnergy] = useState(80); // Metabolic Budget
+            const [stress, setStress] = useState(10); // L_GC (Entropy)
+            const [isRewriting, setIsRewriting] = useState(false); // "Cryptic State"
+            const [history, setHistory] = useState([]);
+            const [tick, setTick] = useState(0);
+            const [message, setMessage] = useState("System Stable. Ready for Construction.");
+
+            // Derived State
+            const maintenanceCost = depth * PARAMS.LANDAUER_COST + (stress * 0.1);
+            // Sapolsky Function: If stress > threshold, effective depth drops
+            const truncatedDepth = stress > PARAMS.THETA_CRIT ? Math.max(1, Math.floor(depth * 0.3)) : depth;
+            const isTruncated = truncatedDepth < depth;
+
+            // --- GAME LOOP ---
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setTick(t => t + 1);
+
+                    // 1. Recover Energy
+                    setEnergy(e => Math.min(PARAMS.MAX_ENERGY, e + PARAMS.METABOLIC_RECOVERY - maintenanceCost));
+
+                    // 2. Reduce Stress (Natural Cooling)
+                    setStress(s => Math.max(5, s - 2));
+
+                    // 3. Handle Rewrite State (Metamorphosis)
+                    if (isRewriting) {
+                        setStress(s => s + 5); // Rewrite generates entropy
+                        setEnergy(e => e - 2); // Rewrite consumes extra energy
+                        
+                        // Random chance to stabilize or fail based on energy
+                        if (energy < 10) {
+                            setIsRewriting(false);
+                            setMessage("CRITICAL FAILURE: Energy depleted during metamorphosis. Reverting.");
+                            setStress(90); // Trauma spike
+                        } else if (Math.random() < 0.1) {
+                            // Success!
+                            setIsRewriting(false);
+                            setDepth(d => d + 3); // Jump in depth
+                            setStress(20); // Relief
+                            setMessage("Transformation Complete! New CIB Architecture installed.");
+                        }
+                    }
+
+                    // 4. Record History for Chart
+                    setHistory(prev => {
+                        const newPoint = { 
+                            name: tick, 
+                            Depth: depth, 
+                            EffectiveDepth: truncatedDepth,
+                            Energy: energy, 
+                            Stress: stress 
+                        };
+                        const newHist = [...prev, newPoint];
+                        return newHist.slice(-50); // Keep last 50 ticks
+                    });
+
+                }, 500); // 500ms tick
+
+                return () => clearInterval(interval);
+            }, [depth, energy, stress, isRewriting, maintenanceCost, tick]);
+
+            // --- ACTIONS ---
+
+            const handleConstruct = () => {
+                if (isRewriting) return;
+                if (energy < 20) {
+                    setMessage("Not enough metabolic budget to learn.");
+                    return;
+                }
+                setDepth(d => d + 1);
+                setEnergy(e => e - 10); // Cost of construction
+                setStress(s => s + 5); // Learning adds mild stress
+                setMessage("Additive Change: Added 1 layer to CIB.");
+            };
+
+            const handleRewrite = () => {
+                if (isRewriting) return;
+                if (energy < 50) {
+                    setMessage("Cannot initiate Metamorphosis: Energy too low.");
+                    return;
+                }
+                setIsRewriting(true);
+                setStress(s => s + 30); // Instant Entropy Spike
+                setDepth(d => Math.floor(d * 0.5)); // Dissolution Phase (Soup)
+                setMessage("Transformative Change Initiated: CIB structure dissolving...");
+            };
+
+            const handleStressSpike = () => {
+                setStress(s => Math.min(100, s + 40));
+                setMessage("External Shock! Cortisol spike detected.");
+            };
+
+            // Icons
+            const BrainIcon = () => <i data-lucide="brain" className="w-8 h-8 mr-2 text-green-400"></i>;
+            const AlertTriangleIcon = () => <i data-lucide="alert-triangle" className="w-4 h-4 mr-1"></i>;
+            const RefreshCwIcon = () => <i data-lucide="refresh-cw" className="w-4 h-4 mr-1"></i>;
+            const ZapIcon = () => <i data-lucide="zap" className="w-4 h-4 text-yellow-400 mr-1"></i>;
+            const ThermometerIcon = () => <i data-lucide="thermometer" className="w-4 h-4 text-red-400 mr-1"></i>;
+            const GitBranchIcon = () => <i data-lucide="git-branch" className="w-6 h-6 text-green-400 mb-1"></i>;
+            
+            // Re-run lucide.createIcons() after render
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            });
+
+            if (!LineChart) {
+                return <div className="text-white p-4">Loading Visualization Library...</div>;
+            }
+
+            return (
+                <div className="p-4 max-w-4xl mx-auto bg-gray-900 text-gray-100 min-h-screen font-sans">
+                    <header className="mb-6 border-b border-gray-700 pb-4">
+                        <h1 className="text-3xl font-bold flex items-center text-green-400">
+                            <BrainIcon />
+                            The CIB Blueprint Laboratory
+                        </h1>
+                        <p className="text-gray-400 mt-2">
+                            UCP v2.0 Simulation: Managing the Thermodynamics of Agency
+                        </p>
+                    </header>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        {/* LEFT COLUMN: VISUALIZATION */}
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-xl font-semibold">Internal Geometry (P-Adic Tree)</h2>
+                                {isTruncated && <span className="text-red-500 font-bold flex items-center animate-pulse"><AlertTriangleIcon /> TRUNCATED</span>}
+                                {isRewriting && <span className="text-yellow-400 font-bold flex items-center animate-pulse"><RefreshCwIcon /> REWRITING...</span>}
+                            </div>
+                            
+                            <div className="bg-gray-900 rounded-lg flex items-center justify-center border border-gray-700 relative">
+                                <PAdicTree depth={depth} truncatedDepth={truncatedDepth} isRewriting={isRewriting} entropy={stress} />
+                                
+                                {/* Overlay Metrics */}
+                                <div className="absolute top-2 left-2 text-xs text-gray-400 space-y-1">
+                                    <div>Logical Depth (L): <span className="text-white font-mono">{depth}</span></div>
+                                    <div>Effective Depth: <span className={`${isTruncated ? 'text-red-500' : 'text-green-500'} font-mono`}>{truncatedDepth}</span></div>
+                                    <div>Maintenance Cost: <span className="text-red-400 font-mono">{maintenanceCost.toFixed(1)}/tick</span></div>
+                                </div>
+                            </div>
+
+                            <div className="mt-4 p-3 bg-black/30 rounded border border-gray-600 min-h-[60px]">
+                                <p className="text-sm font-mono text-green-300">System Log: {message}</p>
+                            </div>
+                        </div>
+
+                        {/* RIGHT COLUMN: CONTROLS & METRICS */}
+                        <div className="space-y-6">
+                            
+                            {/* METERS */}
+                            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 space-y-4">
+                                <div>
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span className="flex items-center"><ZapIcon /> Metabolic Budget (C_PFC)</span>
+                                        <span>{energy.toFixed(0)} / 100</span>
+                                    </div>
+                                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
+                                        <div className="h-full bg-yellow-400 transition-all duration-300" style={{ width: `${energy}%` }}></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span className="flex items-center"><ThermometerIcon /> System Entropy (L_GC)</span>
+                                        <span>{stress.toFixed(0)} / 100</span>
+                                    </div>
+                                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden relative">
+                                        <div className={`h-full transition-all duration-300 ${stress > PARAMS.THETA_CRIT ? 'bg-red-600' : 'bg-blue-400'}`} style={{ width: `${Math.min(100, stress)}%` }}></div>
+                                        {/* Sapolsky Line */}
+                                        <div className="absolute top-0 bottom-0 w-0.5 bg-white/50" style={{ left: `${PARAMS.THETA_CRIT}%` }} title="Sapolsky Limit"></div>
+                                    </div>
+                                    <p className="text-xs text-gray-500 mt-1 text-right">Sapolsky Limit: {PARAMS.THETA_CRIT}</p>
+                                </div>
+                            </div>
+
+                            {/* ACTION BUTTONS */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <button 
+                                    onClick={handleConstruct} 
+                                    disabled={isRewriting || isTruncated}
+                                    className="p-4 bg-green-900/50 hover:bg-green-800 border border-green-600 rounded-lg flex flex-col items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-center">
+                                    <GitBranchIcon />
+                                    <span className="font-bold text-green-100 block">Additive Construction</span>
+                                    <span className="text-xs text-green-300 block">Build Layer (+1 Depth)</span>
+                                </button>
+
+                                <button 
+                                    onClick={handleRewrite} 
+                                    disabled={isRewriting}
+                                    className="p-4 bg-purple-900/50 hover:bg-purple-800 border border-purple-600 rounded-lg flex flex-col items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-center">
+                                    <RefreshCwIcon />
+                                    <span className="font-bold text-purple-100 block">Transformative Rewrite</span>
+                                    <span className="text-xs text-purple-300 block">Dissolve & Rebuild (High Risk)</span>
+                                </button>
+                            </div>
+
+                            <button 
+                                onClick={handleStressSpike}
+                                className="w-full p-3 bg-red-900/30 hover:bg-red-900/50 border border-red-800 rounded text-red-200 text-sm font-semibold transition-all">
+                                Inject Environmental Shock (Spike L_GC)
+                            </button>
+
+                            {/* CHART */}
+                            <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 h-48">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={history}>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#4b5563" />
+                                        <XAxis dataKey="name" hide />
+                                        <YAxis domain={[0, 100]} hide />
+                                        <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: 'none', color: '#fff' }} />
+                                        <Legend />
+                                        <Line type="monotone" dataKey="Energy" stroke="#facc15" dot={false} strokeWidth={2} />
+                                        <Line type="monotone" dataKey="Stress" stroke="#ef4444" dot={false} strokeWidth={2} />
+                                        <Line type="step" dataKey="EffectiveDepth" stroke="#4ade80" dot={false} strokeWidth={2} />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* FOOTER / TEACHING MOMENTS */}
+                    <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-400">
+                        <div className="bg-black/20 p-4 rounded border border-gray-800">
+                            <h3 className="text-white font-bold mb-2">1. The Cost of Depth</h3>
+                            <p>Notice how <strong>Maintenance Cost</strong> rises as your tree grows deep. A complex mind (High L) requires massive energy to sustain. If you run out of energy, you cannot learn.</p>
+                        </div>
+                        <div className="bg-black/20 p-4 rounded border border-gray-800">
+                            <h3 className="text-white font-bold mb-2">2. The Sapolsky Cliff</h3>
+                            <p>Push stress past {PARAMS.THETA_CRIT} (the white line). Watch the tree turn <strong>RED</strong>. This is <strong>Truncation</strong>. You still "have" the depth, but you cannot access it. You are in Read-Only Mode.</p>
+                        </div>
+                        <div className="bg-black/20 p-4 rounded border border-gray-800">
+                            <h3 className="text-white font-bold mb-2">3. The Butterfly Effect</h3>
+                            <p>Try "Transformative Rewrite." Notice how Depth <strong>drops</strong> initially (Dissolution). You must survive the chaos (High Stress) to emerge with a deeper structure.</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
