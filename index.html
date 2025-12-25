@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCP v2.0: The P-Adic Geometry of Agency</title>
+    <title>The Constructor's Dashboard v2.1</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -27,21 +27,42 @@
             overflow: hidden;
         }
 
+        /* --- HEADER & HELP BUTTON --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 1px solid #334155;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        h1 { margin: 0; font-size: 1.5rem; }
+        h1 { margin: 0; font-size: 1.4rem; }
         .subtitle { color: #94a3b8; font-size: 0.9rem; }
+        
+        .btn-help {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            animation: pulse 2s infinite;
+        }
+        .btn-help:hover { background-color: #2563eb; }
 
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* --- LAYOUT --- */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 300px 1fr 300px;
+            grid-template-columns: 320px 1fr 300px;
             gap: 20px;
             height: 100%;
         }
@@ -52,18 +73,20 @@
             padding: 20px;
             overflow-y: auto;
             border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Controls */
+        /* --- CONTROLS --- */
         .control-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.85rem; color: #cbd5e1; }
         input[type="range"] { width: 100%; margin-bottom: 5px; cursor: pointer; }
         .value-display { font-family: monospace; color: var(--accent-blue); float: right; }
         
         button {
             width: 100%;
             padding: 10px;
-            margin-top: 10px;
+            margin-top: 8px;
             border: none;
             border-radius: 6px;
             font-weight: bold;
@@ -71,145 +94,232 @@
             transition: all 0.2s;
         }
 
-        .btn-biobond { background-color: var(--accent-green); color: #fff; }
-        .btn-biobond:hover { background-color: #059669; }
-        .btn-reset { background-color: var(--panel-color); border: 1px solid #64748b; color: #fff; }
-        .btn-strategy { background-color: #475569; color: #fff; margin-bottom: 5px;}
-        .btn-strategy.active { background-color: var(--accent-blue); border: 1px solid #fff; }
+        .btn-biobond { background-color: var(--accent-green); color: #fff; border: 1px solid transparent;}
+        .btn-biobond.active { background-color: rgba(16, 185, 129, 0.2); border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .btn-reset { background-color: transparent; border: 1px solid #64748b; color: #94a3b8; font-size: 0.8rem; margin-top: 15px;}
+        .btn-strategy { background-color: #334155; color: #cbd5e1; margin-bottom: 5px; text-align: left; padding-left: 15px;}
+        .btn-strategy:hover { background-color: #475569; }
+        .btn-strategy.active { background-color: var(--accent-blue); color: white; border-left: 4px solid white; }
 
-        /* Visualization */
+        /* --- VISUALIZATION AREA --- */
         #simCanvas {
             width: 100%;
-            height: 100%;
+            flex-grow: 1;
             background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             border-radius: 8px;
+            margin-bottom: 10px;
         }
+        
+        /* New Narrative Box */
+        .narrative-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            min-height: 80px;
+            transition: all 0.3s;
+        }
+        .narrative-title { font-weight: bold; display: block; margin-bottom: 5px; color: var(--accent-gold); text-transform: uppercase; font-size: 0.75rem; }
 
-        /* Metrics */
+        /* --- METRICS & LOGS --- */
         .metric-card {
             background: rgba(0,0,0,0.2);
             padding: 10px;
             border-radius: 6px;
             margin-bottom: 10px;
             border-left: 4px solid var(--accent-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .metric-title { font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; }
+        .metric-label small { display: block; color: #64748b; font-size: 0.7rem; }
         .metric-value { font-size: 1.2rem; font-weight: bold; font-family: monospace; }
         
         .log-feed {
             font-family: monospace;
-            font-size: 0.8rem;
-            height: 200px;
+            font-size: 0.75rem;
+            flex-grow: 1;
             overflow-y: auto;
             color: #94a3b8;
             border-top: 1px solid #334155;
             padding-top: 10px;
             margin-top: 10px;
         }
-
-        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px;}
         .log-warn { color: var(--accent-red); }
         .log-success { color: var(--accent-green); }
-        .log-info { color: var(--accent-blue); }
 
-        /* Legend */
-        .legend { display: flex; gap: 10px; margin-top: 10px; font-size: 0.8rem; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-        .info-box { font-size: 0.85rem; line-height: 1.4; color: #cbd5e1; margin-bottom: 15px;}
+        /* --- MODAL (FIELD GUIDE) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: var(--panel-color);
+            width: 800px;
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            border: 1px solid #475569;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header { padding: 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center;}
+        .modal-body { padding: 30px; overflow-y: auto; line-height: 1.6; }
+        .modal-close { background: transparent; width: auto; font-size: 1.5rem; color: #94a3b8; margin: 0; padding: 0; }
+        
+        .guide-section { margin-bottom: 30px; }
+        .guide-section h3 { color: var(--accent-blue); border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        .term { font-weight: bold; color: var(--accent-gold); }
+        .experiment-box { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--accent-blue); padding: 15px; border-radius: 8px; margin-top: 10px; }
 
     </style>
 </head>
 <body>
 
+<div id="helpModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 style="margin:0">Student Field Guide: The Ethics of Geometry</h2>
+            <button class="modal-close" onclick="closeHelp()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="guide-section">
+                <h3>1. Key Concepts (Definitions)</h3>
+                <p><span class="term">The CIB (The Circles):</span> You are not a point; you are a hierarchy. 
+                The <span style="color:#f59e0b">Gold Core</span> is your biological survival (Roots). 
+                The <span style="color:#3b82f6">Blue Ring</span> is your culture/habits (Trunk). 
+                [cite_start]The <span style="color:#10b981">Green Outer Ring</span> is your "Leading Edge"—your ability to make complex, manual choices[cite: 341].</p>
+
+                <p><span class="term">Truncation (The Crash):</span> When stress gets too high, you can't afford to be complex. 
+                The system "sheds" layers to save energy. You lose the Green Ring first (Agency), then the Blue (Culture), 
+                until only the Gold (Survival) remains. [cite_start]This is the <em>Sapolsky Limit</em> in action[cite: 192].</p>
+
+                <p><span class="term">BioBond (The Cooling System):</span> This button represents "Social Scaffolding"—things like healthcare, 
+                supportive laws, or community trust. It doesn't give you energy directly; it <strong>lowers the temperature</strong> of the environment, 
+                [cite_start]making it cheaper for you to maintain your "Green Ring"[cite: 280].</p>
+            </div>
+
+            <div class="guide-section">
+                <h3>2. Experiments to Try</h3>
+                
+                <div class="experiment-box">
+                    <strong>Experiment A: The Rust Belt Scenario</strong><br>
+                    1. Set <span class="term">Entropy</span> to High (0.9+).<br>
+                    2. Set <span class="term">Budget</span> to Low (2.0).<br>
+                    3. <em>Observe:</em> Watch the agents "Truncate" (shrink). They lose their Green Rings (Agency) and turn Red (Stressed). 
+                    They are now in "Survival Mode."
+                </div>
+
+                <div class="experiment-box">
+                    <strong>Experiment B: The "BioBond" Rescue</strong><br>
+                    1. Keep the settings from Experiment A (Agents are dying/shrinking).<br>
+                    2. Click <span class="term">ACTIVATE BIOBOND</span>.<br>
+                    3. <em>Observe:</em> The red glow fades. The Green Rings slowly grow back. 
+                    You didn't change the agents; you changed their environment, allowing their "Leading Edge" to return.
+                </div>
+
+                <div class="experiment-box">
+                    <strong>Experiment C: The Social Contract Test</strong><br>
+                    1. Switch to <strong>Hobbes</strong>. Notice how stress drops (Order), but growth stops (Control).<br>
+                    2. Switch to <strong>Nozick</strong>. Notice how freedom maximizes growth, but if Entropy spikes, weak agents crash instantly.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <header>
     <div>
         <h1>The Constructor's Dashboard</h1>
-        <div class="subtitle">UCP v2.0: P-Adic Physics Engine & Social Simulation</div>
+        <div class="subtitle">UCP v2.0: Managing the "Metabolic Budget" of Society</div>
     </div>
-    <div style="text-align: right;">
-        <span id="simTime">Step: 0</span>
+    <div>
+        <button class="btn-help" onclick="openHelp()">? Student Field Guide</button>
+        <span id="simTime" style="margin-left: 15px; font-family: monospace; color: #64748b;">Step: 0</span>
     </div>
 </header>
 
 <div class="dashboard-grid">
     <div class="panel">
-        <h3>System Parameters</h3>
-        <div class="info-box">
-            Adjust the thermodynamic variables to observe the geometry of agency.
-        </div>
-
+        <h3 style="margin-top:0">Environment Control</h3>
+        
         <div class="control-group">
-            <label>Env. Entropy (Noise) <span id="val-entropy" class="value-display">0.2</span></label>
+            <label>Environmental Entropy (Noise) <span id="val-entropy" class="value-display">0.2</span></label>
             <input type="range" id="entropySlider" min="0" max="1.5" step="0.05" value="0.2">
-            <small style="color: #64748b;">High noise forces Truncation.</small>
         </div>
 
         <div class="control-group">
             <label>Metabolic Budget (P_max) <span id="val-budget" class="value-display">4.0</span></label>
-            <input type="range" id="budgetSlider" min="1.0" max="10.0" step="0.5" value="4.0">
-            <small style="color: #64748b;">Energy available for Landauer cost.</small>
+            <input type="range" id="budgetSlider" min="1.0" max="8.0" step="0.5" value="4.0">
         </div>
 
         <h3>Social Contract</h3>
-        <button class="btn-strategy" onclick="setStrategy('Hobbes')">Hobbes (Protect Roots)</button>
-        <button class="btn-strategy" onclick="setStrategy('Nozick')">Nozick (Protect Edge)</button>
-        <button class="btn-strategy active" onclick="setStrategy('Rawls')">Rawls (Balanced)</button>
+        <button class="btn-strategy" onclick="setStrategy('Hobbes')">
+            <strong>Hobbes</strong> <br><small style="color:#94a3b8">Protect the Roots (Security)</small>
+        </button>
+        <button class="btn-strategy" onclick="setStrategy('Nozick')">
+            <strong>Nozick</strong> <br><small style="color:#94a3b8">Protect the Edge (Freedom)</small>
+        </button>
+        <button class="btn-strategy active" onclick="setStrategy('Rawls')">
+            <strong>Rawls</strong> <br><small style="color:#94a3b8">Balanced Scaffolding</small>
+        </button>
         
-        <hr style="border-color: #334155; margin: 15px 0;">
-        
-        <button class="btn-biobond" id="biobondBtn" onclick="toggleBioBond()">ACTIVATE BIOBOND</button>
-        <button class="btn-reset" onclick="resetSim()">Reset Simulation</button>
+        <div style="margin-top: auto;">
+            <hr style="border-color: #334155; margin: 15px 0;">
+            <label>Intervention Layer</label>
+            <button class="btn-biobond" id="biobondBtn" onclick="toggleBioBond()">ACTIVATE BIOBOND</button>
+            <button class="btn-reset" onclick="resetSim()">Reset Simulation</button>
+        </div>
     </div>
 
-    <div class="panel" style="padding: 0; position: relative;">
+    <div class="panel" style="padding: 0; background: #000; position: relative;">
         <canvas id="simCanvas"></canvas>
-        <div style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 4px;">
-            <div class="legend">
-                <div><span class="dot" style="background:#f59e0b"></span> Root (Survival)</div>
-                <div><span class="dot" style="background:#3b82f6"></span> Trunk (Culture)</div>
-                <div><span class="dot" style="background:#10b981"></span> Edge (Agency)</div>
+        
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 15px;">
+            <div class="narrative-box" id="narrativeBox">
+                <span class="narrative-title">System Status: Nominal</span>
+                Welcome, Architect. Adjust the sliders to see how Stress affects the geometry of the soul.
             </div>
         </div>
     </div>
 
     <div class="panel">
-        <h3>Thermodynamic Metrics</h3>
+        <h3 style="margin-top:0">Live Telemetry</h3>
         
-        <div class="metric-card" style="border-left-color: var(--accent-red);">
-            <div class="metric-title">Avg Stress (L_GC)</div>
-            <div class="metric-value" id="disp-stress">0.00</div>
-            <small>Sapolsky Limit: > 0.65</small>
+        <div class="metric-card">
+            <div class="metric-label">Avg Stress (L_GC)<small>Target: &lt; 0.65</small></div>
+            <div class="metric-value" id="disp-stress" style="color:#ef4444">0.00</div>
         </div>
 
-        <div class="metric-card" style="border-left-color: var(--accent-blue);">
-            <div class="metric-title">System Lambda (λ)</div>
-            <div class="metric-value" id="disp-lambda">0.00</div>
-            <small>Collective Intelligence</small>
+        <div class="metric-card">
+            <div class="metric-label">Lambda (λ)<small>Collective Intelligence</small></div>
+            <div class="metric-value" id="disp-lambda" style="color:#3b82f6">0.00</div>
         </div>
 
-        <div class="metric-card" style="border-left-color: var(--accent-green);">
-            <div class="metric-title">Avg Logical Depth (N)</div>
-            <div class="metric-value" id="disp-depth">0.0</div>
-            <small>P-Adic Precision</small>
-        </div>
-
-        <div class="metric-card" style="border-left-color: var(--accent-gold);">
-            <div class="metric-title">Group Friction</div>
-            <div class="metric-value" id="disp-friction">0.0</div>
-            <small>Ultrametric Diameter</small>
+        <div class="metric-card">
+            <div class="metric-label">Avg Depth (N)<small>Agency Layers</small></div>
+            <div class="metric-value" id="disp-depth" style="color:#10b981">0.0</div>
         </div>
 
         <h3>Event Log</h3>
         <div class="log-feed" id="logFeed">
-            <div class="log-entry log-info">Simulation Initialized.</div>
+            <div class="log-entry log-success">Simulation Initialized.</div>
         </div>
     </div>
 </div>
 
 <script>
 /**
- * UCP v2.0 - CANONICAL P-ADIC PHYSICS ENGINE (JS PORT)
- * Logic derived from provided Python specs.
+ * UCP v2.1 - Enhanced for Educational Context
  */
 
 // --- PARAMETERS ---
@@ -221,36 +331,28 @@ const PARAMS = {
     GAMMA_DECAY: 0.05,
     BETA_STRESS: 1.8,
     I_PROTOCOL: 1.2,
-    LANDAUER_COST: 0.05,
-    INIT_BUDGET: 4.0
+    LANDAUER_COST: 0.05
 };
 
-// --- CLASSES ---
+// --- NARRATIVE ENGINE ---
+const NARRATIVES = {
+    biobond_on: "<strong>BioBond Active:</strong> You are now acting as an Exo-Constructor. By providing social scaffolding, you are lowering the 'activation energy' required for agents to exist. Watch Stress drop.",
+    biobond_off: "<strong>BioBond Deactivated:</strong> Agents are now exposed to raw environmental entropy. If they lack metabolic budget, they will begin to Truncate.",
+    hobbes: "<strong>Hobbesian Contract:</strong> Prioritizing Order. Deviation is suppressed. This lowers Stress (Roots are safe), but caps Growth (Edges cannot explore).",
+    nozick: "<strong>Nozickian Contract:</strong> Prioritizing Freedom. Agents pay full cost for their choices. High potential growth, but high risk of burnout for weak agents.",
+    rawls: "<strong>Rawlsian Contract:</strong> Balanced approach. Some friction is removed to support the 'least advantaged' agents.",
+    truncation: "<strong>⚠️ TRUNCATION EVENT:</strong> Agents are shedding their 'Green Rings' (Agency) to save energy. They are reverting to automatic survival mode."
+};
+
+// --- PHYSICS ENGINE CLASSES ---
 
 class IdentityKernel {
     constructor(coeffs) {
-        this.coeffs = coeffs; // Array of integers
+        this.coeffs = coeffs;
         this.active_depth = coeffs.length;
-        this.p = PARAMS.PRIME_BASE;
-    }
-
-    metricDistance(other) {
-        let min_len = Math.min(this.active_depth, other.active_depth);
-        
-        for (let k = 0; k < min_len; k++) {
-            if (this.coeffs[k] !== other.coeffs[k]) {
-                // p^-k
-                return Math.pow(this.p, -1 * k);
-            }
-        }
-        if (this.active_depth !== other.active_depth) {
-            return Math.pow(this.p, -1 * min_len);
-        }
-        return 0.0;
     }
 
     truncate(target_depth) {
-        // Enforce min depth of 1 (Root)
         this.active_depth = Math.max(1, Math.min(this.coeffs.length, target_depth));
     }
 
@@ -264,77 +366,59 @@ class IdentityKernel {
 }
 
 class ThermodynamicAgent {
-    constructor(id, prf_coeffs, ita_coeffs) {
+    constructor(id) {
         this.id = id;
-        this.prf_kernel = new IdentityKernel([...prf_coeffs]); // Clone array
-        this.ita_kernel = new IdentityKernel([...ita_coeffs]); 
+        // Init 10 layers
+        let prf = []; 
+        for(let i=0; i<10; i++) prf.push(Math.floor(Math.random() * 7));
         
-        // State
+        this.prf_kernel = new IdentityKernel(prf);
         this.L_GC = 0.3; // Stress
         this.C_PFC = 1.0; // Capacity
-        this.legacy = 0.0; // Growth accumulator
+        this.legacy = 0.0;
         this.is_survival = false;
-        
-        // Visualization coords (assigned by system)
-        this.x = 0;
-        this.y = 0;
     }
 
-    step(neighbors, env_entropy, budget) {
-        // A. Morphic Fidelity Penalty (Distance between Self and Role)
-        const d_morph = this.prf_kernel.metricDistance(this.ita_kernel);
+    step(env_entropy, budget, strategy_mod) {
+        // 1. Calculate Stress (Sapolsky Function Input)
+        // Strategy Mod: Hobbes reduces noise perception
+        let effective_entropy = env_entropy * strategy_mod; 
+        
+        this.L_GC = (0.8 * this.L_GC) + (0.2 * effective_entropy);
 
-        // B. Update Stress (Inertia + Input)
-        const stress_input = env_entropy + (d_morph * 2.0); // Weight debt heavily
-        this.L_GC = (0.8 * this.L_GC) + (0.2 * stress_input);
-
-        // C. Sapolsky Function (Capacity Gate)
+        // 2. Capacity Gate
         let exponent = PARAMS.K_GATE * (this.L_GC - PARAMS.THETA_CRIT);
-        exponent = Math.max(-100, Math.min(100, exponent)); // Clamp
+        exponent = Math.max(-100, Math.min(100, exponent));
         this.C_PFC = 1.0 / (1.0 + Math.exp(exponent));
 
-        // D. Landauer Limit (Thermodynamic Cost)
-        // Cost rises with Temp (Stress)
+        // 3. Landauer Limit (Thermodynamic Cost)
+        // Cost = N * Cost_Per_Bit * Temperature (Stress)
         const T_sys = Math.max(0.1, this.L_GC);
+        // If BioBond is active, it acts as a subsidy, effectively increasing budget
         const max_n = Math.floor(budget / (PARAMS.LANDAUER_COST * T_sys));
         
         const old_depth = this.prf_kernel.active_depth;
         this.prf_kernel.truncate(max_n);
 
-        // Log Truncation Event
+        // Check Truncation for events
         if (this.prf_kernel.active_depth < old_depth && old_depth > 3) {
-            return { event: 'truncation', id: this.id };
+            return 'truncation';
         }
 
-        // Check Survival Mode
-        this.is_survival = this.prf_kernel.active_depth < 3;
+        // 4. Growth (Accretion)
+        const accretion = PARAMS.ETA_LEARNING * this.C_PFC;
+        const decay = PARAMS.GAMMA_DECAY * effective_entropy * Math.exp(this.L_GC);
+        
+        this.legacy += (accretion - decay);
 
-        // E. Growth (Accretion)
-        this.updateGrowth(env_entropy);
+        if (this.legacy > 1.2) {
+            if (this.prf_kernel.expand()) this.legacy = 0.0;
+        }
+
+        // Survival Mode Flag
+        this.is_survival = this.prf_kernel.active_depth < 3;
         
         return null;
-    }
-
-    updateGrowth(env_entropy) {
-        // Simplified Phi (Information Flux)
-        const phi = 1.0 / PARAMS.I_PROTOCOL;
-
-        // Accretion: Needs Manual Mode (C_PFC)
-        const accretion = PARAMS.ETA_LEARNING * this.C_PFC * phi;
-
-        // Ablation: Decay via Stress
-        const decay_factor = Math.exp(PARAMS.BETA_STRESS * this.L_GC);
-        const ablation = PARAMS.GAMMA_DECAY * env_entropy * decay_factor;
-
-        const delta = accretion - ablation;
-        this.legacy += delta;
-
-        // Structural Expansion
-        if (this.legacy > 1.0) {
-            if (this.prf_kernel.expand()) {
-                this.legacy = 0.0;
-            }
-        }
     }
 }
 
@@ -346,249 +430,236 @@ class UCP_System {
         this.budget = 4.0;
         this.biobond = false;
         this.strategy = 'Rawls';
-
-        this.initAgents(12); // Small colony for visuals
+        this.initAgents(12);
     }
 
     initAgents(count) {
         this.agents = [];
         for (let i = 0; i < count; i++) {
-            // Generate P-Adic Coeffs (Length 10)
-            let prf = [];
-            for(let j=0; j<10; j++) prf.push(Math.floor(Math.random() * PARAMS.PRIME_BASE));
-            
-            // ITA (Role) based on strategy
-            // Default: Slight divergence
-            let ita = [...prf];
-            if (Math.random() > 0.7) ita[2] = (ita[2] + 1) % PARAMS.PRIME_BASE; 
-
-            this.agents.push(new ThermodynamicAgent(i, prf, ita));
+            this.agents.push(new ThermodynamicAgent(i));
         }
-    }
-
-    updateStrategy(strat) {
-        this.strategy = strat;
-        this.agents.forEach(a => {
-            if (strat === 'Hobbes') {
-                // Hobbes: Force ITA alignment (Order), but lowers F-Vector
-                // We model this by making ITA = PRF (low morphic debt) but capping growth
-                // Actually, Hobbes enforces external order. Let's make ITA rigid and shared.
-                let rigid_ita = [0,0,0,0,0,0,0,0,0,0]; 
-                a.ita_kernel = new IdentityKernel(rigid_ita);
-            } else if (strat === 'Nozick') {
-                // Nozick: High Freedom. ITA matches PRF perfectly (Self-Ownership)
-                // But External Entropy is usually higher in simulation (simulated elsewhere)
-                a.ita_kernel = new IdentityKernel([...a.prf_kernel.coeffs]);
-            } else {
-                // Rawls: Support Structures. 
-                // We allow some divergence but assume institutions reduce friction.
-                // Standard setup.
-            }
-        });
-        logMsg(`Social Contract switched to: ${strat}`, 'info');
     }
 
     step() {
         this.stepCount++;
         
-        // BioBond Intervention
-        let effective_entropy = this.env_entropy;
-        if (this.biobond) effective_entropy *= 0.4; // Cooling effect
+        // BIOBOND EFFECT: Reduces effective entropy (Cooling)
+        // [Cite 280]: BioBond acts as Cryogenic Cooling System
+        let current_entropy = this.env_entropy;
+        if (this.biobond) current_entropy *= 0.4; 
 
-        // Strategy modifiers
-        if (this.strategy === 'Hobbes') effective_entropy *= 0.8; // Order reduces noise
-        // Nozick relies on the user managing the budget manually
+        // STRATEGY EFFECT
+        let strat_mod = 1.0;
+        if (this.strategy === 'Hobbes') strat_mod = 0.8; // Order reduces variance/noise
+        if (this.strategy === 'Nozick') strat_mod = 1.2; // Freedom increases variance/noise
 
-        let truncations = 0;
+        let trunc_events = 0;
 
         this.agents.forEach(agent => {
-            // In Nozick mode, agents "pay" for freedom - higher implicit cost
-            let effective_budget = this.strategy === 'Nozick' ? this.budget * 0.8 : this.budget;
-
-            let result = agent.step([], effective_entropy, effective_budget);
-            if (result && result.event === 'truncation') truncations++;
+            let res = agent.step(current_entropy, this.budget, strat_mod);
+            if (res === 'truncation') trunc_events++;
         });
 
-        if (truncations > 2) logMsg(`Thermal Runaway: ${truncations} agents truncated!`, 'warn');
+        if (trunc_events > 2) setNarrative(NARRATIVES.truncation, 'alert');
 
         return this.getMetrics();
     }
 
     getMetrics() {
-        let avg_stress = this.agents.reduce((sum, a) => sum + a.L_GC, 0) / this.agents.length;
-        let avg_depth = this.agents.reduce((sum, a) => sum + a.prf_kernel.active_depth, 0) / this.agents.length;
+        let avg_stress = this.agents.reduce((s,a) => s + a.L_GC, 0) / this.agents.length;
+        let avg_depth = this.agents.reduce((s,a) => s + a.prf_kernel.active_depth, 0) / this.agents.length;
+        let avg_cap = this.agents.reduce((s,a) => s + a.C_PFC, 0) / this.agents.length;
+        let surv_rate = this.agents.filter(a => a.is_survival).length / this.agents.length;
         
-        // Calculate Lambda: <C_PFC> * (1 - V_Surv)
-        let avg_cap = this.agents.reduce((sum, a) => sum + a.C_PFC, 0) / this.agents.length;
-        let surv_count = this.agents.filter(a => a.is_survival).length;
-        let lambda = avg_cap * (1.0 - (surv_count / this.agents.length));
+        // Lambda = Capacity * (1 - Survival_Rate) [Cite 264]
+        let lambda = avg_cap * (1.0 - surv_rate);
 
-        // Friction (Sampled Diameter)
-        // Simplified: avg distance from agent 0
-        let dist_sum = 0;
-        for(let i=1; i<this.agents.length; i++) {
-            dist_sum += this.agents[0].prf_kernel.metricDistance(this.agents[i].prf_kernel);
-        }
-        let friction = dist_sum / (this.agents.length - 1);
-
-        return { avg_stress, avg_depth, lambda, friction };
+        return { avg_stress, avg_depth, lambda };
     }
 }
 
-// --- VISUALIZATION & UI ---
+// --- UI LOGIC ---
 
+const sys = new UCP_System();
 const canvas = document.getElementById('simCanvas');
 const ctx = canvas.getContext('2d');
-const sys = new UCP_System();
-let running = true;
+let timer = null;
 
-// Sliders
-const entropyInput = document.getElementById('entropySlider');
-const budgetInput = document.getElementById('budgetSlider');
-const valEntropy = document.getElementById('val-entropy');
-const valBudget = document.getElementById('val-budget');
+// UI Elements
+const els = {
+    entropy: document.getElementById('entropySlider'),
+    budget: document.getElementById('budgetSlider'),
+    dispEntropy: document.getElementById('val-entropy'),
+    dispBudget: document.getElementById('val-budget'),
+    narrative: document.getElementById('narrativeBox'),
+    bioBtn: document.getElementById('biobondBtn'),
+    modal: document.getElementById('helpModal')
+};
 
-// Event Listeners
-entropyInput.addEventListener('input', (e) => {
+// Narrative Helper
+function setNarrative(html, type='info') {
+    els.narrative.innerHTML = `<span class="narrative-title">System Status: ${type === 'alert' ? 'CRITICAL' : 'UPDATE'}</span>${html}`;
+    if(type === 'alert') {
+        els.narrative.style.borderLeftColor = "#ef4444";
+        logMsg("Truncation Event Detected", "warn");
+    } else {
+        els.narrative.style.borderLeftColor = "#f59e0b";
+    }
+}
+
+// Events
+els.entropy.addEventListener('input', (e) => {
     sys.env_entropy = parseFloat(e.target.value);
-    valEntropy.innerText = sys.env_entropy.toFixed(2);
-});
-budgetInput.addEventListener('input', (e) => {
-    sys.budget = parseFloat(e.target.value);
-    valBudget.innerText = sys.budget.toFixed(1);
+    els.dispEntropy.innerText = sys.env_entropy.toFixed(2);
 });
 
-function setStrategy(strat) {
+els.budget.addEventListener('input', (e) => {
+    sys.budget = parseFloat(e.target.value);
+    els.dispBudget.innerText = sys.budget.toFixed(1);
+});
+
+function setStrategy(name) {
+    sys.strategy = name;
     document.querySelectorAll('.btn-strategy').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-    sys.updateStrategy(strat);
+    event.currentTarget.classList.add('active');
+    
+    // Update Narrative
+    if (name === 'Hobbes') setNarrative(NARRATIVES.hobbes);
+    else if (name === 'Nozick') setNarrative(NARRATIVES.nozick);
+    else setNarrative(NARRATIVES.rawls);
+    
+    logMsg(`Social Contract changed to ${name}`, 'info');
 }
 
 function toggleBioBond() {
     sys.biobond = !sys.biobond;
-    const btn = document.getElementById('biobondBtn');
     if (sys.biobond) {
-        btn.innerText = "BIOBOND ACTIVE (COOLING...)";
-        btn.style.backgroundColor = "#3b82f6";
-        logMsg("BioBond Activated: System Temperature dropping.", "success");
+        els.bioBtn.innerHTML = "BIOBOND ACTIVE (COOLING...)";
+        els.bioBtn.classList.add('active');
+        setNarrative(NARRATIVES.biobond_on);
+        logMsg("BioBond Activated", "success");
     } else {
-        btn.innerText = "ACTIVATE BIOBOND";
-        btn.style.backgroundColor = "#10b981";
-        logMsg("BioBond Deactivated.", "info");
+        els.bioBtn.innerHTML = "ACTIVATE BIOBOND";
+        els.bioBtn.classList.remove('active');
+        setNarrative(NARRATIVES.biobond_off);
+        logMsg("BioBond Deactivated", "info");
     }
 }
 
 function resetSim() {
     sys.initAgents(12);
     sys.stepCount = 0;
-    logMsg("Simulation Reset.", "info");
+    logMsg("Simulation Reset", "info");
+    setNarrative("Simulation Reset. Systems Nominal.");
 }
 
-function logMsg(msg, type) {
-    const feed = document.getElementById('logFeed');
-    const div = document.createElement('div');
-    div.className = `log-entry log-${type}`;
-    div.innerText = `[T+${sys.stepCount}] ${msg}`;
-    feed.prepend(div);
+function logMsg(txt, type) {
+    const d = document.createElement('div');
+    d.className = `log-entry log-${type}`;
+    d.innerText = `[T+${sys.stepCount}] ${txt}`;
+    document.getElementById('logFeed').prepend(d);
 }
 
-// Render Loop
+// Modal Logic
+function openHelp() { els.modal.style.display = 'flex'; }
+function closeHelp() { els.modal.style.display = 'none'; }
+
+// Drawing
 function resize() {
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.parentElement.clientHeight;
+    canvas.width = canvas.parentElement.offsetWidth;
+    canvas.height = canvas.parentElement.offsetHeight;
 }
 window.addEventListener('resize', resize);
 resize();
 
-function drawAgent(agent, cx, cy, radius) {
-    const depth = agent.prf_kernel.active_depth;
-    const max_depth = 10;
+function draw() {
+    // 1. Update Physics
+    const m = sys.step();
     
-    // Draw "Halo" based on Capacity (Glow)
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius * 1.2, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(16, 185, 129, ${agent.C_PFC * 0.3})`;
-    ctx.fill();
+    // 2. Update Metrics UI
+    document.getElementById('simTime').innerText = `Step: ${sys.stepCount}`;
+    document.getElementById('disp-stress').innerText = m.avg_stress.toFixed(2);
+    document.getElementById('disp-lambda').innerText = m.lambda.toFixed(2);
+    document.getElementById('disp-depth').innerText = m.avg_depth.toFixed(1);
 
-    // Draw concentric circles for P-Adic Layers
-    // Root (0-2) -> Trunk (3-6) -> Edge (7+)
-    
-    for (let i = depth; i > 0; i--) {
+    // Color code stress metric
+    const sElem = document.getElementById('disp-stress');
+    if(m.avg_stress > 0.65) sElem.style.color = "#ef4444";
+    else sElem.style.color = "#10b981";
+
+    // 3. Render Canvas
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0,0,canvas.width, canvas.height);
+
+    const cx = canvas.width/2;
+    const cy = canvas.height/2;
+    const r = Math.min(cx, cy) * 0.65;
+
+    sys.agents.forEach((a, i) => {
+        const ang = (i / sys.agents.length) * Math.PI * 2;
+        const ax = cx + Math.cos(ang) * r;
+        const ay = cy + Math.sin(ang) * r;
+
+        // Draw Connector
         ctx.beginPath();
-        let r = (radius / max_depth) * i;
-        ctx.arc(cx, cy, r, 0, Math.PI*2);
-        
-        if (i <= 2) ctx.fillStyle = "#f59e0b"; // Root (Gold)
-        else if (i <= 6) ctx.fillStyle = "#3b82f6"; // Trunk (Blue)
-        else ctx.fillStyle = "#10b981"; // Edge (Green)
-        
-        ctx.fill();
-        ctx.strokeStyle = "#1e293b";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
-
-    // Stress overlay (Red tint)
-    if (agent.L_GC > 0.3) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(239, 68, 68, ${Math.min(0.8, (agent.L_GC - 0.3))})`;
-        ctx.fill();
-    }
-}
-
-function animate() {
-    if (running) {
-        // Physics Step
-        const metrics = sys.step();
-        
-        // Update UI Metrics
-        document.getElementById('simTime').innerText = `Step: ${sys.stepCount}`;
-        document.getElementById('disp-stress').innerText = metrics.avg_stress.toFixed(2);
-        document.getElementById('disp-lambda').innerText = metrics.lambda.toFixed(2);
-        document.getElementById('disp-depth').innerText = metrics.avg_depth.toFixed(1);
-        document.getElementById('disp-friction').innerText = metrics.friction.toFixed(2);
-
-        // Sapolsky Warning
-        const stressElem = document.getElementById('disp-stress').parentElement;
-        if (metrics.avg_stress > PARAMS.THETA_CRIT) stressElem.style.borderColor = "#ef4444";
-        else stressElem.style.borderColor = "#3b82f6";
-    }
-
-    // Drawing
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const layoutRadius = Math.min(centerX, centerY) * 0.6;
-
-    // Arrange agents in a circle
-    sys.agents.forEach((agent, i) => {
-        const angle = (i / sys.agents.length) * Math.PI * 2;
-        const x = centerX + Math.cos(angle) * layoutRadius;
-        const y = centerY + Math.sin(angle) * layoutRadius;
-        
-        // Draw connection to center (Gravity/Coherence)
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.lineTo(x, y);
-        ctx.strokeStyle = `rgba(148, 163, 184, 0.2)`;
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(ax, ay);
+        ctx.strokeStyle = `rgba(59, 130, 246, 0.15)`;
         ctx.stroke();
 
-        drawAgent(agent, x, y, 25);
+        // Draw Agent
+        const size = 25;
+        
+        // Glow (BioBond visual)
+        if (sys.biobond) {
+            ctx.beginPath();
+            ctx.arc(ax, ay, size*1.4, 0, Math.PI*2);
+            ctx.fillStyle = "rgba(16, 185, 129, 0.15)";
+            ctx.fill();
+        }
+
+        // P-Adic Circles
+        const depth = a.prf_kernel.active_depth;
+        const max_d = 10;
+        
+        for (let j=depth; j>0; j--) {
+            ctx.beginPath();
+            // Scale radius based on depth
+            let rad = (size / max_d) * j;
+            ctx.arc(ax, ay, rad, 0, Math.PI*2);
+            
+            // Color Logic [Cite 341]
+            if (j <= 2) ctx.fillStyle = "#f59e0b"; // Root
+            else if (j <= 6) ctx.fillStyle = "#3b82f6"; // Trunk
+            else ctx.fillStyle = "#10b981"; // Edge
+            
+            ctx.fill();
+            ctx.strokeStyle = "#1e293b";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        // Stress Overlay (Red Tint)
+        if (a.L_GC > 0.4) {
+            ctx.beginPath();
+            ctx.arc(ax, ay, size, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(239, 68, 68, ${Math.min(0.7, (a.L_GC - 0.3))})`;
+            ctx.fill();
+        }
     });
 
-    // Draw Center "Attractor"
+    // Center Hub
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 10, 0, Math.PI*2);
+    ctx.arc(cx, cy, 8, 0, Math.PI*2);
     ctx.fillStyle = "#fff";
     ctx.fill();
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(draw);
 }
 
 // Start
-animate();
+openHelp(); // Auto-open help on first load
+draw();
 
 </script>
 </body>
