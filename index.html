@@ -3,343 +3,593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The CIB Blueprint Laboratory</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>UCP v2.0: The P-Adic Geometry of Agency</title>
     <style>
-        body { background-color: #111827; color: #f3f4f6; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+        :root {
+            --bg-color: #0f172a;
+            --panel-color: #1e293b;
+            --text-color: #e2e8f0;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-gold: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; }
+        .subtitle { color: #94a3b8; font-size: 0.9rem; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .panel {
+            background-color: var(--panel-color);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 1px solid #334155;
+        }
+
+        /* Controls */
+        .control-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem; }
+        input[type="range"] { width: 100%; margin-bottom: 5px; cursor: pointer; }
+        .value-display { font-family: monospace; color: var(--accent-blue); float: right; }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-biobond { background-color: var(--accent-green); color: #fff; }
+        .btn-biobond:hover { background-color: #059669; }
+        .btn-reset { background-color: var(--panel-color); border: 1px solid #64748b; color: #fff; }
+        .btn-strategy { background-color: #475569; color: #fff; margin-bottom: 5px;}
+        .btn-strategy.active { background-color: var(--accent-blue); border: 1px solid #fff; }
+
+        /* Visualization */
+        #simCanvas {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            border-radius: 8px;
+        }
+
+        /* Metrics */
+        .metric-card {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--accent-blue);
+        }
+        .metric-title { font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; }
+        .metric-value { font-size: 1.2rem; font-weight: bold; font-family: monospace; }
+        
+        .log-feed {
+            font-family: monospace;
+            font-size: 0.8rem;
+            height: 200px;
+            overflow-y: auto;
+            color: #94a3b8;
+            border-top: 1px solid #334155;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .log-warn { color: var(--accent-red); }
+        .log-success { color: var(--accent-green); }
+        .log-info { color: var(--accent-blue); }
+
+        /* Legend */
+        .legend { display: flex; gap: 10px; margin-top: 10px; font-size: 0.8rem; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .info-box { font-size: 0.85rem; line-height: 1.4; color: #cbd5e1; margin-bottom: 15px;}
+
     </style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-        // Safely access Recharts only after component mount or check for window.Recharts
-        const Recharts = window.Recharts || {};
-        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+<header>
+    <div>
+        <h1>The Constructor's Dashboard</h1>
+        <div class="subtitle">UCP v2.0: P-Adic Physics Engine & Social Simulation</div>
+    </div>
+    <div style="text-align: right;">
+        <span id="simTime">Step: 0</span>
+    </div>
+</header>
 
-        // --- PHYSICS CONSTANTS (UCP v2.0) ---
-        const PARAMS = {
-            LANDAUER_COST: 0.8,      // Energy cost per bit of depth
-            THETA_CRIT: 75,          // Sapolsky Limit (Stress Threshold)
-            REWRITE_COST: 40,        // Entropy spike during transformation
-            METABOLIC_RECOVERY: 5,   // Energy gain per tick
-            MAX_ENERGY: 100,
-            PRIME_BASE: 3,           // Branching factor for visual tree
-        };
+<div class="dashboard-grid">
+    <div class="panel">
+        <h3>System Parameters</h3>
+        <div class="info-box">
+            Adjust the thermodynamic variables to observe the geometry of agency.
+        </div>
 
-        // --- COMPONENT: THE P-ADIC TREE VISUALIZER ---
-        const PAdicTree = ({ depth, truncatedDepth, isRewriting, entropy }) => {
-            const canvasRef = useRef(null);
+        <div class="control-group">
+            <label>Env. Entropy (Noise) <span id="val-entropy" class="value-display">0.2</span></label>
+            <input type="range" id="entropySlider" min="0" max="1.5" step="0.05" value="0.2">
+            <small style="color: #64748b;">High noise forces Truncation.</small>
+        </div>
 
-            useEffect(() => {
-                const canvas = canvasRef.current;
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                const width = canvas.width;
-                const height = canvas.height;
+        <div class="control-group">
+            <label>Metabolic Budget (P_max) <span id="val-budget" class="value-display">4.0</span></label>
+            <input type="range" id="budgetSlider" min="1.0" max="10.0" step="0.5" value="4.0">
+            <small style="color: #64748b;">Energy available for Landauer cost.</small>
+        </div>
 
-                ctx.clearRect(0, 0, width, height);
+        <h3>Social Contract</h3>
+        <button class="btn-strategy" onclick="setStrategy('Hobbes')">Hobbes (Protect Roots)</button>
+        <button class="btn-strategy" onclick="setStrategy('Nozick')">Nozick (Protect Edge)</button>
+        <button class="btn-strategy active" onclick="setStrategy('Rawls')">Rawls (Balanced)</button>
+        
+        <hr style="border-color: #334155; margin: 15px 0;">
+        
+        <button class="btn-biobond" id="biobondBtn" onclick="toggleBioBond()">ACTIVATE BIOBOND</button>
+        <button class="btn-reset" onclick="resetSim()">Reset Simulation</button>
+    </div>
 
-                // Dynamic color based on state
-                let strokeColor = '#4ade80'; // Green (Healthy)
-                if (isRewriting) strokeColor = '#facc15'; // Yellow (Flux/Cryptic)
-                if (truncatedDepth < depth) strokeColor = '#ef4444'; // Red (Truncated/Stress)
+    <div class="panel" style="padding: 0; position: relative;">
+        <canvas id="simCanvas"></canvas>
+        <div style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 4px;">
+            <div class="legend">
+                <div><span class="dot" style="background:#f59e0b"></span> Root (Survival)</div>
+                <div><span class="dot" style="background:#3b82f6"></span> Trunk (Culture)</div>
+                <div><span class="dot" style="background:#10b981"></span> Edge (Agency)</div>
+            </div>
+        </div>
+    </div>
 
-                const drawBranch = (x, y, len, angle, branchDepth) => {
-                    ctx.beginPath();
-                    ctx.save();
-                    ctx.strokeStyle = strokeColor;
-                    ctx.fillStyle = strokeColor;
-                    ctx.lineWidth = Math.max(1, 4 - branchDepth * 0.5);
-                    ctx.translate(x, y);
-                    ctx.rotate(angle * Math.PI / 180);
-                    ctx.moveTo(0, 0);
-                    ctx.lineTo(0, -len);
-                    ctx.stroke();
+    <div class="panel">
+        <h3>Thermodynamic Metrics</h3>
+        
+        <div class="metric-card" style="border-left-color: var(--accent-red);">
+            <div class="metric-title">Avg Stress (L_GC)</div>
+            <div class="metric-value" id="disp-stress">0.00</div>
+            <small>Sapolsky Limit: > 0.65</small>
+        </div>
 
-                    if (branchDepth < depth) {
-                        // If we are deeper than truncation, draw as "Ghost" (Grey)
-                        if (branchDepth >= truncatedDepth) {
-                            ctx.strokeStyle = '#374151'; // Grey
-                            ctx.setLineDash([5, 5]); // Dashed line for potential but inaccessible depth
-                        } else {
-                            ctx.setLineDash([]);
-                        }
-                        
-                        // Recursive branching
-                        const newLen = len * 0.75;
-                        // Jitter based on entropy (Visualizing "Noise")
-                        const jitter = (Math.random() - 0.5) * entropy * 0.5; 
-                        
-                        drawBranch(0, -len, newLen, -25 + jitter, branchDepth + 1);
-                        drawBranch(0, -len, newLen, 25 + jitter, branchDepth + 1);
-                    }
-                    ctx.restore();
-                };
+        <div class="metric-card" style="border-left-color: var(--accent-blue);">
+            <div class="metric-title">System Lambda (λ)</div>
+            <div class="metric-value" id="disp-lambda">0.00</div>
+            <small>Collective Intelligence</small>
+        </div>
 
-                // Draw Trunk (Root)
-                drawBranch(width / 2, height - 20, 60, 0, 0);
+        <div class="metric-card" style="border-left-color: var(--accent-green);">
+            <div class="metric-title">Avg Logical Depth (N)</div>
+            <div class="metric-value" id="disp-depth">0.0</div>
+            <small>P-Adic Precision</small>
+        </div>
 
-            }, [depth, truncatedDepth, isRewriting, entropy]);
+        <div class="metric-card" style="border-left-color: var(--accent-gold);">
+            <div class="metric-title">Group Friction</div>
+            <div class="metric-value" id="disp-friction">0.0</div>
+            <small>Ultrametric Diameter</small>
+        </div>
 
-            return <canvas ref={canvasRef} width={300} height={300} className="mx-auto" />;
-        };
+        <h3>Event Log</h3>
+        <div class="log-feed" id="logFeed">
+            <div class="log-entry log-info">Simulation Initialized.</div>
+        </div>
+    </div>
+</div>
 
-        // --- MAIN APP COMPONENT ---
-        const App = () => {
-            // --- STATE ---
-            const [depth, setDepth] = useState(2); // Current Logical Depth
-            const [energy, setEnergy] = useState(80); // Metabolic Budget
-            const [stress, setStress] = useState(10); // L_GC (Entropy)
-            const [isRewriting, setIsRewriting] = useState(false); // "Cryptic State"
-            const [history, setHistory] = useState([]);
-            const [tick, setTick] = useState(0);
-            const [message, setMessage] = useState("System Stable. Ready for Construction.");
+<script>
+/**
+ * UCP v2.0 - CANONICAL P-ADIC PHYSICS ENGINE (JS PORT)
+ * Logic derived from provided Python specs.
+ */
 
-            // Derived State
-            const maintenanceCost = depth * PARAMS.LANDAUER_COST + (stress * 0.1);
-            // Sapolsky Function: If stress > threshold, effective depth drops
-            const truncatedDepth = stress > PARAMS.THETA_CRIT ? Math.max(1, Math.floor(depth * 0.3)) : depth;
-            const isTruncated = truncatedDepth < depth;
+// --- PARAMETERS ---
+const PARAMS = {
+    PRIME_BASE: 7,
+    THETA_CRIT: 0.65,      // Critical stress
+    K_GATE: 15.0,          // Sapolsky slope
+    ETA_LEARNING: 0.1,
+    GAMMA_DECAY: 0.05,
+    BETA_STRESS: 1.8,
+    I_PROTOCOL: 1.2,
+    LANDAUER_COST: 0.05,
+    INIT_BUDGET: 4.0
+};
 
-            // --- GAME LOOP ---
-            useEffect(() => {
-                const interval = setInterval(() => {
-                    setTick(t => t + 1);
+// --- CLASSES ---
 
-                    // 1. Recover Energy
-                    setEnergy(e => Math.min(PARAMS.MAX_ENERGY, e + PARAMS.METABOLIC_RECOVERY - maintenanceCost));
+class IdentityKernel {
+    constructor(coeffs) {
+        this.coeffs = coeffs; // Array of integers
+        this.active_depth = coeffs.length;
+        this.p = PARAMS.PRIME_BASE;
+    }
 
-                    // 2. Reduce Stress (Natural Cooling)
-                    setStress(s => Math.max(5, s - 2));
-
-                    // 3. Handle Rewrite State (Metamorphosis)
-                    if (isRewriting) {
-                        setStress(s => s + 5); // Rewrite generates entropy
-                        setEnergy(e => e - 2); // Rewrite consumes extra energy
-                        
-                        // Random chance to stabilize or fail based on energy
-                        if (energy < 10) {
-                            setIsRewriting(false);
-                            setMessage("CRITICAL FAILURE: Energy depleted during metamorphosis. Reverting.");
-                            setStress(90); // Trauma spike
-                        } else if (Math.random() < 0.1) {
-                            // Success!
-                            setIsRewriting(false);
-                            setDepth(d => d + 3); // Jump in depth
-                            setStress(20); // Relief
-                            setMessage("Transformation Complete! New CIB Architecture installed.");
-                        }
-                    }
-
-                    // 4. Record History for Chart
-                    setHistory(prev => {
-                        const newPoint = { 
-                            name: tick, 
-                            Depth: depth, 
-                            EffectiveDepth: truncatedDepth,
-                            Energy: energy, 
-                            Stress: stress 
-                        };
-                        const newHist = [...prev, newPoint];
-                        return newHist.slice(-50); // Keep last 50 ticks
-                    });
-
-                }, 500); // 500ms tick
-
-                return () => clearInterval(interval);
-            }, [depth, energy, stress, isRewriting, maintenanceCost, tick]);
-
-            // --- ACTIONS ---
-
-            const handleConstruct = () => {
-                if (isRewriting) return;
-                if (energy < 20) {
-                    setMessage("Not enough metabolic budget to learn.");
-                    return;
-                }
-                setDepth(d => d + 1);
-                setEnergy(e => e - 10); // Cost of construction
-                setStress(s => s + 5); // Learning adds mild stress
-                setMessage("Additive Change: Added 1 layer to CIB.");
-            };
-
-            const handleRewrite = () => {
-                if (isRewriting) return;
-                if (energy < 50) {
-                    setMessage("Cannot initiate Metamorphosis: Energy too low.");
-                    return;
-                }
-                setIsRewriting(true);
-                setStress(s => s + 30); // Instant Entropy Spike
-                setDepth(d => Math.floor(d * 0.5)); // Dissolution Phase (Soup)
-                setMessage("Transformative Change Initiated: CIB structure dissolving...");
-            };
-
-            const handleStressSpike = () => {
-                setStress(s => Math.min(100, s + 40));
-                setMessage("External Shock! Cortisol spike detected.");
-            };
-
-            // Icons
-            const BrainIcon = () => <i data-lucide="brain" className="w-8 h-8 mr-2 text-green-400"></i>;
-            const AlertTriangleIcon = () => <i data-lucide="alert-triangle" className="w-4 h-4 mr-1"></i>;
-            const RefreshCwIcon = () => <i data-lucide="refresh-cw" className="w-4 h-4 mr-1"></i>;
-            const ZapIcon = () => <i data-lucide="zap" className="w-4 h-4 text-yellow-400 mr-1"></i>;
-            const ThermometerIcon = () => <i data-lucide="thermometer" className="w-4 h-4 text-red-400 mr-1"></i>;
-            const GitBranchIcon = () => <i data-lucide="git-branch" className="w-6 h-6 text-green-400 mb-1"></i>;
-            
-            // Re-run lucide.createIcons() after render
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            });
-
-            if (!LineChart) {
-                return <div className="text-white p-4">Loading Visualization Library...</div>;
+    metricDistance(other) {
+        let min_len = Math.min(this.active_depth, other.active_depth);
+        
+        for (let k = 0; k < min_len; k++) {
+            if (this.coeffs[k] !== other.coeffs[k]) {
+                // p^-k
+                return Math.pow(this.p, -1 * k);
             }
+        }
+        if (this.active_depth !== other.active_depth) {
+            return Math.pow(this.p, -1 * min_len);
+        }
+        return 0.0;
+    }
 
-            return (
-                <div className="p-4 max-w-4xl mx-auto bg-gray-900 text-gray-100 min-h-screen font-sans">
-                    <header className="mb-6 border-b border-gray-700 pb-4">
-                        <h1 className="text-3xl font-bold flex items-center text-green-400">
-                            <BrainIcon />
-                            The CIB Blueprint Laboratory
-                        </h1>
-                        <p className="text-gray-400 mt-2">
-                            UCP v2.0 Simulation: Managing the Thermodynamics of Agency
-                        </p>
-                    </header>
+    truncate(target_depth) {
+        // Enforce min depth of 1 (Root)
+        this.active_depth = Math.max(1, Math.min(this.coeffs.length, target_depth));
+    }
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
-                        {/* LEFT COLUMN: VISUALIZATION */}
-                        <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-xl font-semibold">Internal Geometry (P-Adic Tree)</h2>
-                                {isTruncated && <span className="text-red-500 font-bold flex items-center animate-pulse"><AlertTriangleIcon /> TRUNCATED</span>}
-                                {isRewriting && <span className="text-yellow-400 font-bold flex items-center animate-pulse"><RefreshCwIcon /> REWRITING...</span>}
-                            </div>
-                            
-                            <div className="bg-gray-900 rounded-lg flex items-center justify-center border border-gray-700 relative">
-                                <PAdicTree depth={depth} truncatedDepth={truncatedDepth} isRewriting={isRewriting} entropy={stress} />
-                                
-                                {/* Overlay Metrics */}
-                                <div className="absolute top-2 left-2 text-xs text-gray-400 space-y-1">
-                                    <div>Logical Depth (L): <span className="text-white font-mono">{depth}</span></div>
-                                    <div>Effective Depth: <span className={`${isTruncated ? 'text-red-500' : 'text-green-500'} font-mono`}>{truncatedDepth}</span></div>
-                                    <div>Maintenance Cost: <span className="text-red-400 font-mono">{maintenanceCost.toFixed(1)}/tick</span></div>
-                                </div>
-                            </div>
+    expand() {
+        if (this.active_depth < this.coeffs.length) {
+            this.active_depth++;
+            return true;
+        }
+        return false;
+    }
+}
 
-                            <div className="mt-4 p-3 bg-black/30 rounded border border-gray-600 min-h-[60px]">
-                                <p className="text-sm font-mono text-green-300">System Log: {message}</p>
-                            </div>
-                        </div>
+class ThermodynamicAgent {
+    constructor(id, prf_coeffs, ita_coeffs) {
+        this.id = id;
+        this.prf_kernel = new IdentityKernel([...prf_coeffs]); // Clone array
+        this.ita_kernel = new IdentityKernel([...ita_coeffs]); 
+        
+        // State
+        this.L_GC = 0.3; // Stress
+        this.C_PFC = 1.0; // Capacity
+        this.legacy = 0.0; // Growth accumulator
+        this.is_survival = false;
+        
+        // Visualization coords (assigned by system)
+        this.x = 0;
+        this.y = 0;
+    }
 
-                        {/* RIGHT COLUMN: CONTROLS & METRICS */}
-                        <div className="space-y-6">
-                            
-                            {/* METERS */}
-                            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 space-y-4">
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="flex items-center"><ZapIcon /> Metabolic Budget (C_PFC)</span>
-                                        <span>{energy.toFixed(0)} / 100</span>
-                                    </div>
-                                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
-                                        <div className="h-full bg-yellow-400 transition-all duration-300" style={{ width: `${energy}%` }}></div>
-                                    </div>
-                                </div>
+    step(neighbors, env_entropy, budget) {
+        // A. Morphic Fidelity Penalty (Distance between Self and Role)
+        const d_morph = this.prf_kernel.metricDistance(this.ita_kernel);
 
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="flex items-center"><ThermometerIcon /> System Entropy (L_GC)</span>
-                                        <span>{stress.toFixed(0)} / 100</span>
-                                    </div>
-                                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden relative">
-                                        <div className={`h-full transition-all duration-300 ${stress > PARAMS.THETA_CRIT ? 'bg-red-600' : 'bg-blue-400'}`} style={{ width: `${Math.min(100, stress)}%` }}></div>
-                                        {/* Sapolsky Line */}
-                                        <div className="absolute top-0 bottom-0 w-0.5 bg-white/50" style={{ left: `${PARAMS.THETA_CRIT}%` }} title="Sapolsky Limit"></div>
-                                    </div>
-                                    <p className="text-xs text-gray-500 mt-1 text-right">Sapolsky Limit: {PARAMS.THETA_CRIT}</p>
-                                </div>
-                            </div>
+        // B. Update Stress (Inertia + Input)
+        const stress_input = env_entropy + (d_morph * 2.0); // Weight debt heavily
+        this.L_GC = (0.8 * this.L_GC) + (0.2 * stress_input);
 
-                            {/* ACTION BUTTONS */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <button 
-                                    onClick={handleConstruct} 
-                                    disabled={isRewriting || isTruncated}
-                                    className="p-4 bg-green-900/50 hover:bg-green-800 border border-green-600 rounded-lg flex flex-col items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-center">
-                                    <GitBranchIcon />
-                                    <span className="font-bold text-green-100 block">Additive Construction</span>
-                                    <span className="text-xs text-green-300 block">Build Layer (+1 Depth)</span>
-                                </button>
+        // C. Sapolsky Function (Capacity Gate)
+        let exponent = PARAMS.K_GATE * (this.L_GC - PARAMS.THETA_CRIT);
+        exponent = Math.max(-100, Math.min(100, exponent)); // Clamp
+        this.C_PFC = 1.0 / (1.0 + Math.exp(exponent));
 
-                                <button 
-                                    onClick={handleRewrite} 
-                                    disabled={isRewriting}
-                                    className="p-4 bg-purple-900/50 hover:bg-purple-800 border border-purple-600 rounded-lg flex flex-col items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-center">
-                                    <RefreshCwIcon />
-                                    <span className="font-bold text-purple-100 block">Transformative Rewrite</span>
-                                    <span className="text-xs text-purple-300 block">Dissolve & Rebuild (High Risk)</span>
-                                </button>
-                            </div>
+        // D. Landauer Limit (Thermodynamic Cost)
+        // Cost rises with Temp (Stress)
+        const T_sys = Math.max(0.1, this.L_GC);
+        const max_n = Math.floor(budget / (PARAMS.LANDAUER_COST * T_sys));
+        
+        const old_depth = this.prf_kernel.active_depth;
+        this.prf_kernel.truncate(max_n);
 
-                            <button 
-                                onClick={handleStressSpike}
-                                className="w-full p-3 bg-red-900/30 hover:bg-red-900/50 border border-red-800 rounded text-red-200 text-sm font-semibold transition-all">
-                                Inject Environmental Shock (Spike L_GC)
-                            </button>
+        // Log Truncation Event
+        if (this.prf_kernel.active_depth < old_depth && old_depth > 3) {
+            return { event: 'truncation', id: this.id };
+        }
 
-                            {/* CHART */}
-                            <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 h-48">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={history}>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#4b5563" />
-                                        <XAxis dataKey="name" hide />
-                                        <YAxis domain={[0, 100]} hide />
-                                        <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: 'none', color: '#fff' }} />
-                                        <Legend />
-                                        <Line type="monotone" dataKey="Energy" stroke="#facc15" dot={false} strokeWidth={2} />
-                                        <Line type="monotone" dataKey="Stress" stroke="#ef4444" dot={false} strokeWidth={2} />
-                                        <Line type="step" dataKey="EffectiveDepth" stroke="#4ade80" dot={false} strokeWidth={2} />
-                                    </LineChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-                    </div>
+        // Check Survival Mode
+        this.is_survival = this.prf_kernel.active_depth < 3;
 
-                    {/* FOOTER / TEACHING MOMENTS */}
-                    <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-400">
-                        <div className="bg-black/20 p-4 rounded border border-gray-800">
-                            <h3 className="text-white font-bold mb-2">1. The Cost of Depth</h3>
-                            <p>Notice how <strong>Maintenance Cost</strong> rises as your tree grows deep. A complex mind (High L) requires massive energy to sustain. If you run out of energy, you cannot learn.</p>
-                        </div>
-                        <div className="bg-black/20 p-4 rounded border border-gray-800">
-                            <h3 className="text-white font-bold mb-2">2. The Sapolsky Cliff</h3>
-                            <p>Push stress past {PARAMS.THETA_CRIT} (the white line). Watch the tree turn <strong>RED</strong>. This is <strong>Truncation</strong>. You still "have" the depth, but you cannot access it. You are in Read-Only Mode.</p>
-                        </div>
-                        <div className="bg-black/20 p-4 rounded border border-gray-800">
-                            <h3 className="text-white font-bold mb-2">3. The Butterfly Effect</h3>
-                            <p>Try "Transformative Rewrite." Notice how Depth <strong>drops</strong> initially (Dissolution). You must survive the chaos (High Stress) to emerge with a deeper structure.</p>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
+        // E. Growth (Accretion)
+        this.updateGrowth(env_entropy);
+        
+        return null;
+    }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+    updateGrowth(env_entropy) {
+        // Simplified Phi (Information Flux)
+        const phi = 1.0 / PARAMS.I_PROTOCOL;
+
+        // Accretion: Needs Manual Mode (C_PFC)
+        const accretion = PARAMS.ETA_LEARNING * this.C_PFC * phi;
+
+        // Ablation: Decay via Stress
+        const decay_factor = Math.exp(PARAMS.BETA_STRESS * this.L_GC);
+        const ablation = PARAMS.GAMMA_DECAY * env_entropy * decay_factor;
+
+        const delta = accretion - ablation;
+        this.legacy += delta;
+
+        // Structural Expansion
+        if (this.legacy > 1.0) {
+            if (this.prf_kernel.expand()) {
+                this.legacy = 0.0;
+            }
+        }
+    }
+}
+
+class UCP_System {
+    constructor() {
+        this.agents = [];
+        this.stepCount = 0;
+        this.env_entropy = 0.2;
+        this.budget = 4.0;
+        this.biobond = false;
+        this.strategy = 'Rawls';
+
+        this.initAgents(12); // Small colony for visuals
+    }
+
+    initAgents(count) {
+        this.agents = [];
+        for (let i = 0; i < count; i++) {
+            // Generate P-Adic Coeffs (Length 10)
+            let prf = [];
+            for(let j=0; j<10; j++) prf.push(Math.floor(Math.random() * PARAMS.PRIME_BASE));
+            
+            // ITA (Role) based on strategy
+            // Default: Slight divergence
+            let ita = [...prf];
+            if (Math.random() > 0.7) ita[2] = (ita[2] + 1) % PARAMS.PRIME_BASE; 
+
+            this.agents.push(new ThermodynamicAgent(i, prf, ita));
+        }
+    }
+
+    updateStrategy(strat) {
+        this.strategy = strat;
+        this.agents.forEach(a => {
+            if (strat === 'Hobbes') {
+                // Hobbes: Force ITA alignment (Order), but lowers F-Vector
+                // We model this by making ITA = PRF (low morphic debt) but capping growth
+                // Actually, Hobbes enforces external order. Let's make ITA rigid and shared.
+                let rigid_ita = [0,0,0,0,0,0,0,0,0,0]; 
+                a.ita_kernel = new IdentityKernel(rigid_ita);
+            } else if (strat === 'Nozick') {
+                // Nozick: High Freedom. ITA matches PRF perfectly (Self-Ownership)
+                // But External Entropy is usually higher in simulation (simulated elsewhere)
+                a.ita_kernel = new IdentityKernel([...a.prf_kernel.coeffs]);
+            } else {
+                // Rawls: Support Structures. 
+                // We allow some divergence but assume institutions reduce friction.
+                // Standard setup.
+            }
+        });
+        logMsg(`Social Contract switched to: ${strat}`, 'info');
+    }
+
+    step() {
+        this.stepCount++;
+        
+        // BioBond Intervention
+        let effective_entropy = this.env_entropy;
+        if (this.biobond) effective_entropy *= 0.4; // Cooling effect
+
+        // Strategy modifiers
+        if (this.strategy === 'Hobbes') effective_entropy *= 0.8; // Order reduces noise
+        // Nozick relies on the user managing the budget manually
+
+        let truncations = 0;
+
+        this.agents.forEach(agent => {
+            // In Nozick mode, agents "pay" for freedom - higher implicit cost
+            let effective_budget = this.strategy === 'Nozick' ? this.budget * 0.8 : this.budget;
+
+            let result = agent.step([], effective_entropy, effective_budget);
+            if (result && result.event === 'truncation') truncations++;
+        });
+
+        if (truncations > 2) logMsg(`Thermal Runaway: ${truncations} agents truncated!`, 'warn');
+
+        return this.getMetrics();
+    }
+
+    getMetrics() {
+        let avg_stress = this.agents.reduce((sum, a) => sum + a.L_GC, 0) / this.agents.length;
+        let avg_depth = this.agents.reduce((sum, a) => sum + a.prf_kernel.active_depth, 0) / this.agents.length;
+        
+        // Calculate Lambda: <C_PFC> * (1 - V_Surv)
+        let avg_cap = this.agents.reduce((sum, a) => sum + a.C_PFC, 0) / this.agents.length;
+        let surv_count = this.agents.filter(a => a.is_survival).length;
+        let lambda = avg_cap * (1.0 - (surv_count / this.agents.length));
+
+        // Friction (Sampled Diameter)
+        // Simplified: avg distance from agent 0
+        let dist_sum = 0;
+        for(let i=1; i<this.agents.length; i++) {
+            dist_sum += this.agents[0].prf_kernel.metricDistance(this.agents[i].prf_kernel);
+        }
+        let friction = dist_sum / (this.agents.length - 1);
+
+        return { avg_stress, avg_depth, lambda, friction };
+    }
+}
+
+// --- VISUALIZATION & UI ---
+
+const canvas = document.getElementById('simCanvas');
+const ctx = canvas.getContext('2d');
+const sys = new UCP_System();
+let running = true;
+
+// Sliders
+const entropyInput = document.getElementById('entropySlider');
+const budgetInput = document.getElementById('budgetSlider');
+const valEntropy = document.getElementById('val-entropy');
+const valBudget = document.getElementById('val-budget');
+
+// Event Listeners
+entropyInput.addEventListener('input', (e) => {
+    sys.env_entropy = parseFloat(e.target.value);
+    valEntropy.innerText = sys.env_entropy.toFixed(2);
+});
+budgetInput.addEventListener('input', (e) => {
+    sys.budget = parseFloat(e.target.value);
+    valBudget.innerText = sys.budget.toFixed(1);
+});
+
+function setStrategy(strat) {
+    document.querySelectorAll('.btn-strategy').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    sys.updateStrategy(strat);
+}
+
+function toggleBioBond() {
+    sys.biobond = !sys.biobond;
+    const btn = document.getElementById('biobondBtn');
+    if (sys.biobond) {
+        btn.innerText = "BIOBOND ACTIVE (COOLING...)";
+        btn.style.backgroundColor = "#3b82f6";
+        logMsg("BioBond Activated: System Temperature dropping.", "success");
+    } else {
+        btn.innerText = "ACTIVATE BIOBOND";
+        btn.style.backgroundColor = "#10b981";
+        logMsg("BioBond Deactivated.", "info");
+    }
+}
+
+function resetSim() {
+    sys.initAgents(12);
+    sys.stepCount = 0;
+    logMsg("Simulation Reset.", "info");
+}
+
+function logMsg(msg, type) {
+    const feed = document.getElementById('logFeed');
+    const div = document.createElement('div');
+    div.className = `log-entry log-${type}`;
+    div.innerText = `[T+${sys.stepCount}] ${msg}`;
+    feed.prepend(div);
+}
+
+// Render Loop
+function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function drawAgent(agent, cx, cy, radius) {
+    const depth = agent.prf_kernel.active_depth;
+    const max_depth = 10;
+    
+    // Draw "Halo" based on Capacity (Glow)
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius * 1.2, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(16, 185, 129, ${agent.C_PFC * 0.3})`;
+    ctx.fill();
+
+    // Draw concentric circles for P-Adic Layers
+    // Root (0-2) -> Trunk (3-6) -> Edge (7+)
+    
+    for (let i = depth; i > 0; i--) {
+        ctx.beginPath();
+        let r = (radius / max_depth) * i;
+        ctx.arc(cx, cy, r, 0, Math.PI*2);
+        
+        if (i <= 2) ctx.fillStyle = "#f59e0b"; // Root (Gold)
+        else if (i <= 6) ctx.fillStyle = "#3b82f6"; // Trunk (Blue)
+        else ctx.fillStyle = "#10b981"; // Edge (Green)
+        
+        ctx.fill();
+        ctx.strokeStyle = "#1e293b";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    // Stress overlay (Red tint)
+    if (agent.L_GC > 0.3) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(239, 68, 68, ${Math.min(0.8, (agent.L_GC - 0.3))})`;
+        ctx.fill();
+    }
+}
+
+function animate() {
+    if (running) {
+        // Physics Step
+        const metrics = sys.step();
+        
+        // Update UI Metrics
+        document.getElementById('simTime').innerText = `Step: ${sys.stepCount}`;
+        document.getElementById('disp-stress').innerText = metrics.avg_stress.toFixed(2);
+        document.getElementById('disp-lambda').innerText = metrics.lambda.toFixed(2);
+        document.getElementById('disp-depth').innerText = metrics.avg_depth.toFixed(1);
+        document.getElementById('disp-friction').innerText = metrics.friction.toFixed(2);
+
+        // Sapolsky Warning
+        const stressElem = document.getElementById('disp-stress').parentElement;
+        if (metrics.avg_stress > PARAMS.THETA_CRIT) stressElem.style.borderColor = "#ef4444";
+        else stressElem.style.borderColor = "#3b82f6";
+    }
+
+    // Drawing
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const layoutRadius = Math.min(centerX, centerY) * 0.6;
+
+    // Arrange agents in a circle
+    sys.agents.forEach((agent, i) => {
+        const angle = (i / sys.agents.length) * Math.PI * 2;
+        const x = centerX + Math.cos(angle) * layoutRadius;
+        const y = centerY + Math.sin(angle) * layoutRadius;
+        
+        // Draw connection to center (Gravity/Coherence)
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = `rgba(148, 163, 184, 0.2)`;
+        ctx.stroke();
+
+        drawAgent(agent, x, y, 25);
+    });
+
+    // Draw Center "Attractor"
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 10, 0, Math.PI*2);
+    ctx.fillStyle = "#fff";
+    ctx.fill();
+
+    requestAnimationFrame(animate);
+}
+
+// Start
+animate();
+
+</script>
 </body>
 </html>
